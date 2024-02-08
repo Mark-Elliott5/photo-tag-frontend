@@ -12,25 +12,44 @@ async function getAnonCookie() {
     // status == 200 -> cookie did not exist for anon user and has been placed
     return response.status;
   } catch (error) {
-    throw new Error(`Axios GET cookie failure: ${error}`);
+    throw new Error(`Axios GET anon cookie failure: ${error}`);
   }
 }
 
-async function submitWaldo(coords: object) {
+async function getUserCookie(credentials: {
+  username: string;
+  password: string;
+}) {
   if (!process.env.APIURL) {
     throw new Error('No API URL');
   }
   try {
-    const response = await axios.post(process.env.APIURL + '/waldo/', coords);
+    const response = await axios.post(
+      process.env.APIURL + '/login',
+      credentials
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Axios POST login failure: ${error}`);
+  }
+}
+
+async function submitWaldo(coords: { x: number; y: number }) {
+  if (!process.env.APIURL) {
+    throw new Error('No API URL');
+  }
+  try {
+    const response = await axios.post(process.env.APIURL + '/waldo', coords);
     // status == 400 -> incorrect guess
     // status == 200 -> correct guess
-    return response.status;
+    // response needs to have info denoting win condition to display message/leaderboard
+    return response;
   } catch (error) {
     throw new Error(`Axios POST guess error: ${error}`);
   }
 }
 
-export { getAnonCookie, submitWaldo };
+export { getAnonCookie, getUserCookie, submitWaldo };
 
 // app.get('/api/', (req, res) => {
 //   if (req.cookies.anonId) {
