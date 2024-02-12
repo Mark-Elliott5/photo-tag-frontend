@@ -34,21 +34,21 @@ async function getUserCookie(credentials: {
   }
 }
 
-async function submitWaldo(coords: { x: number; y: number }) {
+async function submitWaldo(coords: { x: number; y: number }, object: string) {
   // if (!process.env.APIURL) {
   //   throw new Error('No API URL');
   // }
   try {
-    const response = await axios.post(
-      window.location.hostname + '/api/waldo',
-      coords
-    );
+    const response = await axios.post(window.location.hostname + '/api/waldo', {
+      coords,
+      object,
+    });
     // status == 401 -> incorrect guess
     // status == 200 -> correct guess
     // response needs to have info denoting win condition to display message/leaderboard
     return response;
   } catch (error) {
-    throw new Error(`Axios POST guess error: ${error}`);
+    console.log(`Axios POST guess error: ${error}`);
   }
 }
 
