@@ -1,13 +1,19 @@
-import { useStopwatchContext } from '../context/useStopwatchContext';
+// import { useStopwatchContext } from '../context/useStopwatchContext';
 
-function Stopwatch() {
-  const { isRunning, hours, minutes, seconds } = useStopwatchContext();
+function Stopwatch({
+  hours,
+  minutes,
+  seconds,
+}: {
+  hours: number;
+  minutes: number;
+  seconds: number;
+}) {
+  // const { isRunning, hours, minutes, seconds } = useStopwatchContext();
 
   return (
     <>
-      <span id='timer'>
-        {isRunning ? `${hours}: ${minutes}: ${seconds}` : undefined}
-      </span>
+      <span id='timer'>{`${hours}: ${minutes}: ${seconds}`}</span>
     </>
   );
 }

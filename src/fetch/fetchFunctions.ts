@@ -8,7 +8,7 @@ async function getAnonCookie() {
     // { withCredentials: true } needed only if not accessing the same domain
     const response = await axios.get(process.env.APIURL + '/');
     // response.data == res.body in express
-    // status == 400 -> cookie already exists for anon user
+    // status == 401 -> cookie already exists for anon user
     // status == 200 -> cookie did not exist for anon user and has been placed
     return response.status;
   } catch (error) {
@@ -40,7 +40,7 @@ async function submitWaldo(coords: { x: number; y: number }) {
   }
   try {
     const response = await axios.post(process.env.APIURL + '/waldo', coords);
-    // status == 400 -> incorrect guess
+    // status == 401 -> incorrect guess
     // status == 200 -> correct guess
     // response needs to have info denoting win condition to display message/leaderboard
     return response;
@@ -49,12 +49,36 @@ async function submitWaldo(coords: { x: number; y: number }) {
   }
 }
 
-export { getAnonCookie, getUserCookie, submitWaldo };
+async function startGame() {
+  if (!process.env.APIURL) {
+    throw new Error('No API URL');
+  }
+  try {
+    // { withCredentials: true } needed only if not accessing the same domain
+    const response = await axios.get(process.env.APIURL + '/start');
+    // response.data == res.body in express
+    // status == 401 -> error
+    // status == 200 -> req.session.startTime set
+    return response.status;
+    // whatever takes in return response.status needs to call stopwatch start
+  } catch (error) {
+    throw new Error(`Axios GET anon cookie failure: ${error}`);
+  }
+}
+
+export { getAnonCookie, getUserCookie, submitWaldo, startGame };
 
 // app.get('/api/', (req, res) => {
 //   if (req.cookies.anonId) {
 //     res.json();
 //   }
+//     const id = nanoId();
+//     res.cookie('anonId', id, { httpOnly: true });
+//   }
+// );
+
+// app.get('/api/start', (req, res) => {
+//    req.session.startTime = new Date();
 //     const id = nanoId();
 //     res.cookie('anonId', id, { httpOnly: true });
 //   }
@@ -67,6 +91,9 @@ export { getAnonCookie, getUserCookie, submitWaldo };
 // app.post('/api/submit', (req, res) => {
 //   if (!req.isAuthenticated()) {
 //     res.status(401).json('Cookie not found!');
+//   }
+//   if (!req.session.startTime) {
+//     res.status(401).json('Game has not been started.');
 //   }
 //   // check req.body.coords and compare to database
 //   // interface Object {
@@ -81,10 +108,33 @@ export { getAnonCookie, getUserCookie, submitWaldo };
 //   const { x, y } = req.body;
 
 //   if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+//     req.session.correct += 1;
+//     if (req.session.correct === 3) {
+//       const endTime = new Date();
+//       const milliseconds = Math.abs(
+//         endTime.valueOf() - req.session.startTime.valueOf()
+//       );
+//       req.session.startTime = undefined;
+//       res.json(milliseconds);
+//       // get total seconds between the times
+//     }
 //     return res.json(true);
 //   }
 //   res.json(false);
 // });
+
+// front end date string calculation:
+// let delta =
+// Math.abs(endTime.valueOf() - req.session.startTime.valueOf()) / 1000;
+// const days = Math.floor(delta / 86400);
+// delta -= days * 86400;
+// const hours = Math.floor(delta / 3600) % 24;
+// delta -= hours * 3600;
+// const minutes = Math.floor(delta / 60) % 60;
+// delta -= minutes * 60;
+
+// // what's left is seconds
+// const seconds = delta % 60;
 
 // react app needs to use event.offsetX and offsetY to determine actual coords to be submitted?
 // function getCoords15(event) {

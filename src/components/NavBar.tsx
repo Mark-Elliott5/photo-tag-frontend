@@ -1,11 +1,9 @@
-import Stopwatch from './Stopwatch';
-
-function NavBar() {
+function NavBar({ children }: { children: React.ReactNode }) {
   return (
     <>
       <nav id='nav'>
         <span id='logo-home'>Where's Waldo</span>
-        <Stopwatch />
+        {children}
       </nav>
     </>
   );
