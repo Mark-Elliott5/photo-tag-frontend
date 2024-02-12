@@ -3,6 +3,7 @@ import NavBar from './components/NavBar';
 import { startGame } from './fetch/fetchFunctions';
 import { useStopwatch } from 'react-timer-hook';
 import Stopwatch from './components/Stopwatch';
+import '../public/style.css';
 
 function App() {
   const [startError, setStartError] = useState(false);
@@ -16,7 +17,7 @@ function App() {
     start,
     // pause,
     // reset,
-  } = useStopwatch({ autoStart: false });
+  } = useStopwatch({ autoStart: true });
 
   const startGameHandler = async () => {
     // if (isRunning) {

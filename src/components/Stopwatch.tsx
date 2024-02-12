@@ -10,10 +10,14 @@ function Stopwatch({
   seconds: number;
 }) {
   // const { isRunning, hours, minutes, seconds } = useStopwatchContext();
+  const formatUnitOfTime = (unit: number) => {
+    return `${unit < 10 ? `0${unit}` : unit}`;
+  };
+  const timeElapsed = `${formatUnitOfTime(hours)} : ${formatUnitOfTime(minutes)} : ${formatUnitOfTime(seconds)}`;
 
   return (
     <>
-      <span id='timer'>{`${hours}: ${minutes}: ${seconds}`}</span>
+      <span id='timer'>{timeElapsed}</span>
     </>
   );
 }
