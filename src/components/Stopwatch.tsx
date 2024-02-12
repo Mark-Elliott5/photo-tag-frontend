@@ -17,7 +17,12 @@ function Stopwatch({
 
   return (
     <>
-      <span id='timer'>{timeElapsed}</span>
+      <span
+        id='timer'
+        className='text-center bg-slate-400/10 px-3 py-1 rounded-full font-medium tabular-nums'
+      >
+        {timeElapsed}
+      </span>
     </>
   );
 }

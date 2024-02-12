@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 async function getAnonCookie() {
-  if (!process.env.APIURL) {
-    throw new Error('No API URL');
-  }
+  // if (!process.env.APIURL) {
+  //   throw new Error('No API URL');
+  // }
   try {
     // { withCredentials: true } needed only if not accessing the same domain
-    const response = await axios.get(process.env.APIURL + '/');
+    const response = await axios.get(window.location.hostname + '/api/');
     // response.data == res.body in express
     // status == 401 -> cookie already exists for anon user
     // status == 200 -> cookie did not exist for anon user and has been placed
@@ -20,12 +20,12 @@ async function getUserCookie(credentials: {
   username: string;
   password: string;
 }) {
-  if (!process.env.APIURL) {
-    throw new Error('No API URL');
-  }
+  // if (!process.env.APIURL) {
+  //   throw new Error('No API URL');
+  // }
   try {
     const response = await axios.post(
-      process.env.APIURL + '/login',
+      window.location.hostname + '/api/login',
       credentials
     );
     return response.data;
@@ -35,11 +35,14 @@ async function getUserCookie(credentials: {
 }
 
 async function submitWaldo(coords: { x: number; y: number }) {
-  if (!process.env.APIURL) {
-    throw new Error('No API URL');
-  }
+  // if (!process.env.APIURL) {
+  //   throw new Error('No API URL');
+  // }
   try {
-    const response = await axios.post(process.env.APIURL + '/waldo', coords);
+    const response = await axios.post(
+      window.location.hostname + '/api/waldo',
+      coords
+    );
     // status == 401 -> incorrect guess
     // status == 200 -> correct guess
     // response needs to have info denoting win condition to display message/leaderboard
@@ -50,12 +53,12 @@ async function submitWaldo(coords: { x: number; y: number }) {
 }
 
 async function startGame() {
-  if (!process.env.APIURL) {
-    throw new Error('No API URL');
-  }
+  // if (!process.env.APIURL) {
+  //   throw new Error('No API URL');
+  // }
   try {
     // { withCredentials: true } needed only if not accessing the same domain
-    const response = await axios.get(process.env.APIURL + '/start');
+    const response = await axios.get(window.location.hostname + '/api/start');
     // response.data == res.body in express
     // status == 401 -> error
     // status == 200 -> req.session.startTime set
