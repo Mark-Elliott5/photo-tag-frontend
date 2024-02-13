@@ -69,7 +69,20 @@ async function startGame() {
   }
 }
 
-export { getAnonCookie, getUserCookie, submitWaldo, startGame };
+async function submitName(name: string) {
+  try {
+    const response = await axios.post(
+      window.location.hostname + '/api/name',
+      name
+    );
+    // return a leaderboard json
+    return response;
+  } catch (error) {
+    console.log(`Axios POST name error: ${error}`);
+  }
+}
+
+export { getAnonCookie, getUserCookie, submitWaldo, startGame, submitName };
 
 // app.get('/api/', (req, res) => {
 //   if (req.cookies.anonId) {
