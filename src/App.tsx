@@ -6,17 +6,19 @@ import '../public/style.css';
 import { AxiosResponse } from 'axios';
 import ContextMenu from './components/ContextMenu';
 import Leaderboard from './components/Leaderboard';
+import SubmitName from './components/SubmitName';
 
 function App() {
-  const [startError, setStartError] = useState(false);
+  const [gameRunning, setGameRunning] = useState(false);
+  const [submitNameVisible, setSubmitNameVisible] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [leaderboardVisible, setLeaderboardVisible] = useState(false);
 
   const [clickPosition, setClickPosition] = useState({
     x: 0,
-    // elementX: 0,
-    // elementY: 0,
     y: 0,
   });
-  const [menuVisible, setMenuVisible] = useState(false);
+
   const [characters, setCharacters] = useState({
     Aang: false,
     Crewmate: false,
@@ -24,19 +26,19 @@ function App() {
     IceKing: false,
     Mikasa: false,
   });
-  const [leaderboardVisible, setLeaderboardVisible] = useState(false);
 
   const startGameHandler = async () => {
-    // if (isRunning) {
-    //   return pause();
-    // }
-    // start();
-    const status = await startGame();
-    console.log(status);
-    if (status && status === 200) {
-      setStartError(false);
-    } else {
-      setStartError(true);
+    try {
+      const status = await startGame();
+      if (status && status === 200) {
+        console.log('Game started');
+        setGameRunning(true);
+      } else {
+        throw new Error('start game failed');
+      }
+    } catch (err) {
+      console.log(err);
+      setGameRunning(false);
     }
   };
 
@@ -75,25 +77,12 @@ function App() {
     setMenuVisible(false);
   };
 
-  // function handleCloseLeaderboard() {
-  //   setLeaderboard(false);
-  // }
-
-  // const handleSubmitName = async (
-  //   e: React.FormEventHandler<HTMLFormElement>
-  // ) => {
-  //   const target = e.target as HTMLFormElement;
-  //   const formData = new FormData(e.target as HTMLFormElement);
-  //   const name = formData.get('name');
-  //   await handleSubmitName(name);
-  // };
-
   return (
     <>
       <NavBar>
         <Stopwatch
           startGameHandler={startGameHandler}
-          startError={startError}
+          gameRunning={gameRunning}
         />
       </NavBar>
       <img src='../public/search.jpeg' onClick={handleMenu} />
@@ -103,15 +92,9 @@ function App() {
           handleCloseMenu={handleCloseMenu}
         />
       )}
-      {/* {submitName && (
-        <div id='submit-name-wrapper'>
-          <p>Submit your name!</p>
-          <form onSubmit={handleSubmitName}>
-            <input type='text'></input>
-            <button type='submit'>Submit</button>
-          </form>
-        </div>
-      )} */}
+      {submitNameVisible && (
+        <SubmitName setSubmitNameVisible={setSubmitNameVisible} />
+      )}
       {leaderboardVisible && (
         <Leaderboard setLeaderboardVisible={setLeaderboardVisible} />
       )}

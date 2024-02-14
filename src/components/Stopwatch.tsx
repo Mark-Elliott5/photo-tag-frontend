@@ -1,11 +1,12 @@
+import { useEffect } from 'react';
 import { useStopwatch } from 'react-timer-hook';
 
 function Stopwatch({
   startGameHandler,
-  startError,
+  gameRunning,
 }: {
   startGameHandler: () => void;
-  startError: boolean;
+  gameRunning: boolean;
 }) {
   // const { isRunning, hours, minutes, seconds } = useStopwatchContext();
   const {
@@ -14,19 +15,23 @@ function Stopwatch({
     minutes,
     hours,
     // days,
-    isRunning,
     start,
     // pause,
     // reset,
-  } = useStopwatch({ autoStart: true });
+  } = useStopwatch({ autoStart: false });
   const formatUnitOfTime = (unit: number) => {
     return `${unit < 10 ? `0${unit}` : unit}`;
   };
   const timeElapsed = `${formatUnitOfTime(hours)} : ${formatUnitOfTime(minutes)} : ${formatUnitOfTime(seconds)}`;
   const startWatch = () => {
-    start();
     startGameHandler();
   };
+
+  useEffect(() => {
+    if (gameRunning === true) {
+      start();
+    }
+  }, [gameRunning, start]);
 
   return (
     <>
@@ -37,15 +42,11 @@ function Stopwatch({
         {timeElapsed}
       </span>
       <button
-        className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
+        className={`py-1 px-4 rounded-full ${gameRunning ? 'bg-sky-950/20  text-gray-600 ' : 'bg-sky-400/10 text-sky-400'}`}
         id='start-game'
         onClick={startWatch}
       >
-        {!startError
-          ? 'Start'
-          : isRunning
-            ? 'Restart'
-            : 'Server Error! Try again'}
+        {gameRunning ? 'Game started' : 'Start'}
       </button>
     </>
   );
