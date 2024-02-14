@@ -16,6 +16,18 @@ async function getAnonCookie() {
   }
 }
 
+async function getLeaderboard() {
+  try {
+    const response = await axios.get(
+      window.location.hostname + '/api/leaderboard'
+    );
+    // return a leaderboard json
+    return response;
+  } catch (error) {
+    console.log(`Axios GET leaderboad error: ${error}`);
+  }
+}
+
 async function getUserCookie(credentials: {
   username: string;
   password: string;
@@ -31,24 +43,6 @@ async function getUserCookie(credentials: {
     return response.data;
   } catch (error) {
     throw new Error(`Axios POST login failure: ${error}`);
-  }
-}
-
-async function submitWaldo(coords: { x: number; y: number }, object: string) {
-  // if (!process.env.APIURL) {
-  //   throw new Error('No API URL');
-  // }
-  try {
-    const response = await axios.post(window.location.hostname + '/api/waldo', {
-      coords,
-      object,
-    });
-    // status == 401 -> incorrect guess
-    // status == 200 -> correct guess
-    // response needs to have info denoting win condition to display message/leaderboard
-    return response;
-  } catch (error) {
-    console.log(`Axios POST guess error: ${error}`);
   }
 }
 
@@ -82,7 +76,32 @@ async function submitName(name: string) {
   }
 }
 
-export { getAnonCookie, getUserCookie, submitWaldo, startGame, submitName };
+async function submitWaldo(coords: { x: number; y: number }, object: string) {
+  // if (!process.env.APIURL) {
+  //   throw new Error('No API URL');
+  // }
+  try {
+    const response = await axios.post(window.location.hostname + '/api/waldo', {
+      coords,
+      object,
+    });
+    // status == 401 -> incorrect guess
+    // status == 200 -> correct guess
+    // response needs to have info denoting win condition to display message/leaderboard
+    return response;
+  } catch (error) {
+    console.log(`Axios POST guess error: ${error}`);
+  }
+}
+
+export {
+  getAnonCookie,
+  getLeaderboard,
+  getUserCookie,
+  startGame,
+  submitName,
+  submitWaldo,
+};
 
 // app.get('/api/', (req, res) => {
 //   if (req.cookies.anonId) {
