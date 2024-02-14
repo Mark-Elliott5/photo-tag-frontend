@@ -1,25 +1,20 @@
 import { useState } from 'react';
 import NavBar from './components/NavBar';
 import { startGame, submitWaldo } from './fetch/fetchFunctions';
-import { useStopwatch } from 'react-timer-hook';
 import Stopwatch from './components/Stopwatch';
 import '../public/style.css';
 import { AxiosResponse } from 'axios';
+import ContextMenu from './components/ContextMenu';
 
 function App() {
   const [startError, setStartError] = useState(false);
-  const {
-    // totalSeconds,
-    seconds,
-    minutes,
-    hours,
-    // days,
-    isRunning,
-    start,
-    // pause,
-    // reset,
-  } = useStopwatch({ autoStart: true });
-  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
+
+  const [clickPosition, setClickPosition] = useState({
+    x: 0,
+    // elementX: 0,
+    // elementY: 0,
+    y: 0,
+  });
   const [menuVisible, setMenuVisible] = useState(false);
   const [characters, setCharacters] = useState({
     AmongUs: false,
@@ -41,7 +36,6 @@ function App() {
     console.log(status);
     if (status && status === 200) {
       setStartError(false);
-      start();
     } else {
       setStartError(true);
     }
@@ -74,9 +68,8 @@ function App() {
 
   const handleMenu = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    e.clientX > window.innerWidth / 1.2
-      ? setMenuPosition({ x: e.clientX - 130, y: e.clientY })
-      : setMenuPosition({ x: e.clientX, y: e.clientY });
+    console.log(`${e.clientX}, ${e.clientY}`);
+    setClickPosition({ x: e.clientX, y: e.clientY });
     setMenuVisible(true);
   };
 
@@ -90,70 +83,39 @@ function App() {
   //   setLeaderboard(false);
   // }
 
+  // const handleSubmitName = async (
+  //   e: React.FormEventHandler<HTMLFormElement>
+  // ) => {
+  //   const target = e.target as HTMLFormElement;
+  //   const formData = new FormData(e.target as HTMLFormElement);
+  //   const name = formData.get('name');
+  //   await handleSubmitName(name);
+  // };
+
   return (
     <>
       <NavBar>
-        <Stopwatch hours={hours} minutes={minutes} seconds={seconds} />
-        <button
-          className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
-          id='start-game'
-          onClick={startGameHandler}
-        >
-          {!startError
-            ? 'Start'
-            : isRunning
-              ? 'Restart'
-              : 'Server Error! Try again'}
-        </button>
+        <Stopwatch
+          startGameHandler={startGameHandler}
+          startError={startError}
+        />
       </NavBar>
       <img src='../public/search.jpeg' onClick={handleMenu} />
       {menuVisible && (
-        <div
-          id='context-menu'
-          style={{
-            position: 'absolute',
-            top: menuPosition.y,
-            left: menuPosition.x,
-          }}
-          className='flex flex-col items-center px-4 py-3 bg-slate-800 border-b border-slate-50/5 gap-2 rounded-2xl'
-        >
-          <button
-            onClick={handleCloseMenu}
-            value='AmongUs'
-            className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
-          >
-            Among Us
-          </button>
-          <button
-            onClick={handleCloseMenu}
-            value='GMan'
-            className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
-          >
-            G-Man
-          </button>
-          <button
-            onClick={handleCloseMenu}
-            value='Aang'
-            className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
-          >
-            Aang
-          </button>
-          <button
-            onClick={handleCloseMenu}
-            value='Mikasa'
-            className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
-          >
-            Mikasa
-          </button>
-          <button
-            onClick={handleCloseMenu}
-            value='IceKing'
-            className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
-          >
-            Ice King
-          </button>
-        </div>
+        <ContextMenu
+          clickPosition={clickPosition}
+          handleCloseMenu={handleCloseMenu}
+        />
       )}
+      {/* {submitName && (
+        <div id='submit-name-wrapper'>
+          <p>Submit your name!</p>
+          <form onSubmit={handleSubmitName}>
+            <input type='text'></input>
+            <button type='submit'>Submit</button>
+          </form>
+        </div>
+      )} */}
       {/* {leaderboard !== false && (
         <div id='win-container'>
           <p>You Won!</p>
