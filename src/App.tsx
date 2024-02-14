@@ -21,19 +21,26 @@ function App() {
     y: 0,
   });
 
-  const [characters, setCharacters] = useState({
-    Aang: false,
-    Crewmate: false,
-    Gman: false,
-    IceKing: false,
-    Mikasa: false,
+  const [characters, setCharacters] = useState<{ [k: string]: boolean }>({
+    Aang: true,
+    Ghostface: true,
+    'G-man': true,
+    'Ice King': true,
+    Mikasa: true,
   });
 
   const startGameHandler = async () => {
     try {
-      const status = await startGame();
-      if (status && status === 200) {
+      const response: AxiosResponse<string[]> = await startGame();
+      if (response && response.status === 200) {
         console.log('Game started');
+        // remove if block or add else throw new Error before prod
+        if (typeof response.data !== 'string') {
+          const newCharacters = Object.fromEntries(
+            response.data.map((character) => [character, true])
+          );
+          setCharacters(newCharacters);
+        }
         setDisplayWelcome(false);
         setGameRunning(true);
       } else {
@@ -62,7 +69,7 @@ function App() {
     if (response.status === 200) {
       setCharacters({
         ...characters,
-        [(e.target as HTMLButtonElement).value]: true,
+        [(e.target as HTMLButtonElement).value]: false,
       });
     }
     if (response.data.leaderboard) {
@@ -80,6 +87,13 @@ function App() {
     setMenuVisible(false);
   };
 
+  const findCoords = (e: React.MouseEvent<HTMLImageElement>) => {
+    const rect2 = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect2.left;
+    const y = e.clientY - rect2.top;
+    console.log(`Offset Coords: [${x}, ${y}]`);
+  };
+
   return (
     <>
       <NavBar>
@@ -93,11 +107,13 @@ function App() {
         src='../public/search.jpeg'
         className={gameRunning ? undefined : 'blur-sm -z-10'}
         onClick={gameRunning ? handleMenu : undefined}
+        onMouseMove={findCoords}
       />
       {menuVisible && (
         <ContextMenu
           clickPosition={clickPosition}
           handleCloseMenu={handleCloseMenu}
+          characters={characters}
         />
       )}
       {submitNameVisible && (

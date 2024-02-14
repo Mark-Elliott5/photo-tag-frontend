@@ -56,7 +56,7 @@ async function startGame() {
     // response.data == res.body in express
     // status == 401 -> error
     // status == 200 -> req.session.startTime set
-    return response.status;
+    return response;
     // whatever takes in return response.status needs to call stopwatch start
   } catch (error) {
     throw new Error(`Axios GET anon cookie failure: ${error}`);
