@@ -58,38 +58,38 @@ function ContextMenu({
     >
       <button
         onClick={handleCloseMenu}
-        value='AmongUs'
-        className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
-      >
-        Among Us
-      </button>
-      <button
-        onClick={handleCloseMenu}
-        value='GMan'
-        className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
-      >
-        G-Man
-      </button>
-      <button
-        onClick={handleCloseMenu}
-        value='Aang'
+        value='Crewmate'
         className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
       >
         Aang
       </button>
       <button
         onClick={handleCloseMenu}
+        value='GMan'
+        className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
+      >
+        Crewmate
+      </button>
+      <button
+        onClick={handleCloseMenu}
+        value='Aang'
+        className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
+      >
+        G-Man
+      </button>
+      <button
+        onClick={handleCloseMenu}
         value='Mikasa'
         className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
       >
-        Mikasa
+        Ice King
       </button>
       <button
         onClick={handleCloseMenu}
         value='IceKing'
         className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
       >
-        Ice King
+        Mikasa
       </button>
     </div>
   );

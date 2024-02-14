@@ -5,6 +5,7 @@ import Stopwatch from './components/Stopwatch';
 import '../public/style.css';
 import { AxiosResponse } from 'axios';
 import ContextMenu from './components/ContextMenu';
+import Leaderboard from './components/Leaderboard';
 
 function App() {
   const [startError, setStartError] = useState(false);
@@ -17,15 +18,13 @@ function App() {
   });
   const [menuVisible, setMenuVisible] = useState(false);
   const [characters, setCharacters] = useState({
-    AmongUs: false,
-    Mikasa: false,
-    Gman: false,
     Aang: false,
+    Crewmate: false,
+    Gman: false,
     IceKing: false,
+    Mikasa: false,
   });
-  const [leaderboard, setLeaderboard] = useState<
-    false | { name: string; time: string }[]
-  >(false);
+  const [leaderboardVisible, setLeaderboardVisible] = useState(false);
 
   const startGameHandler = async () => {
     // if (isRunning) {
@@ -62,19 +61,16 @@ function App() {
       });
     }
     if (response.data.leaderboard) {
-      setLeaderboard(response.data.leaderboard);
+      setLeaderboardVisible(true);
     }
   };
 
   const handleMenu = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    console.log(`${e.clientX}, ${e.clientY}`);
     setClickPosition({ x: e.clientX, y: e.clientY });
     setMenuVisible(true);
   };
 
   const handleCloseMenu = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
     await checkCoords(e);
     setMenuVisible(false);
   };
@@ -116,17 +112,9 @@ function App() {
           </form>
         </div>
       )} */}
-      {/* {leaderboard !== false && (
-        <div id='win-container'>
-          <p>You Won!</p>
-          <button onClick={handleCloseLeaderboard}>Close</button>
-          {leaderboard.map(({ name, time }) => (
-            <div>
-              {name}: {time}
-            </div>
-          ))}
-        </div>
-      )} */}
+      {leaderboardVisible && (
+        <Leaderboard setLeaderboardVisible={setLeaderboardVisible} />
+      )}
     </>
   );
 }
