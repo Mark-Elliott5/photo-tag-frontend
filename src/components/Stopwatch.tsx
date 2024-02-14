@@ -42,7 +42,7 @@ function Stopwatch({
         {timeElapsed}
       </span>
       <button
-        className={`py-1 px-4 rounded-full ${gameRunning ? 'bg-sky-950/20  text-gray-600 ' : 'bg-sky-400/10 text-sky-400'}`}
+        className={`py-1 px-4 rounded-full ${gameRunning ? 'bg-slate-900/60  text-gray-500 ' : 'bg-sky-400/10 text-sky-400'}`}
         id='start-game'
         onClick={startWatch}
       >

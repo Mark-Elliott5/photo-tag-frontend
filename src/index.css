@@ -17,6 +17,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.search-party {
+  font-family: 'Protest Strike';
+}
+
 a {
   font-weight: 500;
   /* color: #646cff; */

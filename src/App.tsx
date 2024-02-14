@@ -7,12 +7,14 @@ import { AxiosResponse } from 'axios';
 import ContextMenu from './components/ContextMenu';
 import Leaderboard from './components/Leaderboard';
 import SubmitName from './components/SubmitName';
+import WelcomeMessage from './components/WelcomeMessage';
 
 function App() {
   const [gameRunning, setGameRunning] = useState(false);
   const [submitNameVisible, setSubmitNameVisible] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const [leaderboardVisible, setLeaderboardVisible] = useState(false);
+  const [displayWelcome, setDisplayWelcome] = useState(true);
 
   const [clickPosition, setClickPosition] = useState({
     x: 0,
@@ -32,6 +34,7 @@ function App() {
       const status = await startGame();
       if (status && status === 200) {
         console.log('Game started');
+        setDisplayWelcome(false);
         setGameRunning(true);
       } else {
         throw new Error('start game failed');
@@ -85,7 +88,12 @@ function App() {
           gameRunning={gameRunning}
         />
       </NavBar>
-      <img src='../public/search.jpeg' onClick={handleMenu} />
+      {displayWelcome ? <WelcomeMessage /> : undefined}
+      <img
+        src='../public/search.jpeg'
+        className={gameRunning ? undefined : 'blur-sm -z-10'}
+        onClick={gameRunning ? handleMenu : undefined}
+      />
       {menuVisible && (
         <ContextMenu
           clickPosition={clickPosition}
