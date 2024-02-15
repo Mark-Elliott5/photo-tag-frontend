@@ -24,7 +24,7 @@ function App() {
   const [characters, setCharacters] = useState<{ [k: string]: boolean }>({
     Aang: true,
     Ghostface: true,
-    'G-man': true,
+    'G-Man': true,
     'Ice King': true,
     Mikasa: true,
   });
@@ -109,6 +109,17 @@ function App() {
         onClick={gameRunning ? handleMenu : undefined}
         onMouseMove={findCoords}
       />
+      {gameRunning && (
+        <div className='fixed flex flex-row text-center text-sky-400 gap-2 px-3 py-3 bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3 bg-slate-800 border border-slate-50/5 bg-opacity-80 backdrop-blur-2xl rounded-2xl'>
+          {Object.keys(characters).map((key) => (
+            <img
+              key={key}
+              className='sm:w-8 sm:h-8 w-6 h-6 aspect-square'
+              src={`../public/${key}.jpg`}
+            />
+          ))}{' '}
+        </div>
+      )}
       {menuVisible && (
         <ContextMenu
           clickPosition={clickPosition}

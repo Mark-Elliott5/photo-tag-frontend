@@ -64,12 +64,15 @@ function ContextMenu({
           className='flex flex-col items-center px-4 py-3 bg-slate-800 border border-slate-50/5 bg-opacity-80 backdrop-blur-2xl gap-2 rounded-2xl'
         >
           {Object.keys(characters).map((key) => (
-            <div key={key} className='flex gap-2'>
-              <img className='w-8 ' src={`../public/${key}.jpg`} />
+            <div key={key} className='flex items-center gap-2'>
+              <img
+                className='sm:w-8 sm:h-8 w-6 h-6 aspect-square'
+                src={`../public/${key}.jpg`}
+              />
               <button
                 onClick={handleCloseMenu}
                 value={key}
-                className='min-w-32 bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
+                className='min-w-32 sm:text-base text-sm bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
               >
                 {key}
               </button>

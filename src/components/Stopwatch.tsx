@@ -37,12 +37,12 @@ function Stopwatch({
     <>
       <span
         id='timer'
-        className='text-center bg-slate-400/10 px-3 py-1 rounded-full font-medium tabular-nums'
+        className='text-center whitespace-nowrap md:text-base sm:text-sm text-xs  bg-slate-400/10 px-3 py-1 rounded-full font-medium tabular-nums'
       >
         {timeElapsed}
       </span>
       <button
-        className={`py-1 px-4 rounded-full ${gameRunning ? 'bg-slate-900/60  text-gray-500 ' : 'bg-sky-400/10 text-sky-400'}`}
+        className={`py-1 px-4 whitespace-nowrap md:text-base sm:text-sm text-xs rounded-full ${gameRunning ? 'bg-slate-900/60 text-gray-500 ' : 'bg-sky-400/10 text-sky-400'}`}
         id='start-game'
         onClick={startWatch}
       >
