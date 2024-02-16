@@ -13,7 +13,7 @@ function NavBar({ children }: { children: React.ReactNode }) {
         </div>
         <a href='https://github.com/Mark-Elliott5'>
           <img
-            src='../public/github-mark-white.png'
+            src='./github-mark-white.png'
             className='github-link sm:w-6 w-4'
           />
         </a>

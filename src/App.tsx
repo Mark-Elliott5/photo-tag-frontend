@@ -2,7 +2,7 @@ import { useState } from 'react';
 import NavBar from './components/NavBar';
 import { startGame, submitWaldo } from './fetch/fetchFunctions';
 import Stopwatch from './components/Stopwatch';
-import '../public/style.css';
+import './index.css';
 import { AxiosResponse } from 'axios';
 import ContextMenu from './components/ContextMenu';
 import Leaderboard from './components/Leaderboard';
@@ -104,7 +104,7 @@ function App() {
       </NavBar>
       {displayWelcome ? <WelcomeMessage /> : undefined}
       <img
-        src='../public/search.jpeg'
+        src='./search.jpeg'
         className={gameRunning ? undefined : 'blur-sm -z-10'}
         onClick={gameRunning ? handleMenu : undefined}
         onMouseMove={findCoords}
@@ -115,9 +115,9 @@ function App() {
             <img
               key={key}
               className='sm:w-8 sm:h-8 w-6 h-6 aspect-square'
-              src={`../public/${key}.jpg`}
+              src={`${key.toLowerCase()}.jpg`}
             />
-          ))}{' '}
+          ))}
         </div>
       )}
       {menuVisible && (

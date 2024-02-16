@@ -67,7 +67,7 @@ function ContextMenu({
             <div key={key} className='flex items-center gap-2'>
               <img
                 className='sm:w-8 sm:h-8 w-6 h-6 aspect-square'
-                src={`../public/${key}.jpg`}
+                src={`${key.toLowerCase()}.jpg`}
               />
               <button
                 onClick={handleCloseMenu}
