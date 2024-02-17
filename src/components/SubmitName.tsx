@@ -4,11 +4,11 @@ import { submitName } from '../fetch/fetchFunctions';
 function SubmitName({
   setSubmitNameVisible,
 }: {
-  setSubmitNameVisible: (bool: boolean) => void;
+  setSubmitNameVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [loadingSpinner, setLoadingSpinner] = useState(false);
 
-  const handleSubmitName = async (e: React.FormEvent<HTMLFormElement>) => {
+  const sendName = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoadingSpinner(true);
     const name = new FormData(e.currentTarget).get('name');
@@ -20,8 +20,7 @@ function SubmitName({
       if (!response || response.status !== 200) {
         throw new Error(`submitName failed`);
       }
-      setSubmitNameVisible(true);
-      console.log('submitName attempt');
+      setSubmitNameVisible(false);
     } catch (err) {
       setLoadingSpinner(false);
       console.log(err);
@@ -41,7 +40,7 @@ function SubmitName({
             <p className='mb-2 font-bold'>Submit your name!</p>
             <form
               className='flex flex-col items-center justify-center gap-2'
-              onSubmit={handleSubmitName}
+              onSubmit={sendName}
             >
               <input minLength={1} required name='name' type='text'></input>
               <button

@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import NavBar from './components/NavBar';
-import { startGame, submitWaldo } from './fetch/fetchFunctions';
 import Stopwatch from './components/Stopwatch';
 import './index.css';
-import { AxiosResponse } from 'axios';
 import ContextMenu from './components/ContextMenu';
 import Leaderboard from './components/Leaderboard';
 import SubmitName from './components/SubmitName';
@@ -21,6 +19,8 @@ function App() {
     y: 0,
   });
 
+  const [guessCoords, setGuessCoords] = useState({ x: 0, y: 0 });
+
   const [characters, setCharacters] = useState<{ [k: string]: boolean }>({
     Aang: true,
     Ghostface: true,
@@ -29,85 +29,70 @@ function App() {
     Mikasa: true,
   });
 
-  const startGameHandler = async () => {
-    try {
-      const response: AxiosResponse<string[]> = await startGame();
-      if (response && response.status === 200) {
-        console.log('Game started');
-        // remove if block or add else throw new Error before prod
-        if (typeof response.data !== 'string') {
-          const newCharacters = Object.fromEntries(
-            response.data.map((character) => [character, true])
-          );
-          setCharacters(newCharacters);
-        }
-        setDisplayWelcome(false);
-        setGameRunning(true);
-      } else {
-        throw new Error('start game failed');
-      }
-    } catch (err) {
-      console.log(err);
-      setGameRunning(false);
-    }
+  const handleStartGame = (characters: string[]) => {
+    const newCharacters = Object.fromEntries(
+      characters.map((character) => [character, true])
+    );
+    setCharacters(newCharacters);
+    setDisplayWelcome(false);
+    setGameRunning(true);
   };
 
-  const checkCoords = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const response:
-      | AxiosResponse<{ leaderboard?: { name: string; time: string }[] }>
-      | undefined = await submitWaldo(
-      { x, y },
-      (e.target as HTMLButtonElement).value
-    );
-    console.log(response);
-    if (!response) {
-      return console.error('Api not responding to guesses');
-    }
-    if (response.status === 200) {
+  const handleCloseMenu = (data: {
+    correct: boolean;
+    win: boolean;
+    value: string;
+    error?: string;
+  }) => {
+    if (data.correct) {
       setCharacters({
         ...characters,
-        [(e.target as HTMLButtonElement).value]: false,
+        [data.value]: false,
       });
+      // flash correct message
+      // useEffect(() => setTimeout then clearTimeout)
+    } else {
+      // flash incorrect message
     }
-    if (response.data.leaderboard) {
-      setLeaderboardVisible(true);
+    if (data.win) {
+      setSubmitNameVisible(true);
     }
-  };
-
-  const handleMenu = (e: React.MouseEvent<HTMLElement>) => {
-    setClickPosition({ x: e.clientX, y: e.clientY });
-    setMenuVisible(true);
-  };
-
-  const handleCloseMenu = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    await checkCoords(e);
     setMenuVisible(false);
   };
 
-  const findCoords = (e: React.MouseEvent<HTMLImageElement>) => {
-    const rect2 = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect2.left;
-    const y = e.clientY - rect2.top;
+  const handleMenu = (e: React.MouseEvent<HTMLImageElement>) => {
+    setClickPosition({ x: e.clientX, y: e.clientY });
+    const absoluteCoords = findAbsoluteCoords(e);
+    setGuessCoords(absoluteCoords);
+    setMenuVisible(true);
+  };
+
+  const findAbsoluteCoords = (e: React.MouseEvent<HTMLImageElement>) => {
+    const rect = (e.target as HTMLImageElement).getBoundingClientRect();
+    const { offsetX, offsetY } = e.nativeEvent;
+
+    const x = Math.round((offsetX / rect.width) * 100);
+    const y = Math.round((offsetY / rect.height) * 100);
+
     console.log(`Offset Coords: [${x}, ${y}]`);
+    return { x, y };
   };
 
   return (
     <>
       <NavBar>
         <Stopwatch
-          startGameHandler={startGameHandler}
+          handleStartGame={handleStartGame}
           gameRunning={gameRunning}
         />
       </NavBar>
       {displayWelcome ? <WelcomeMessage /> : undefined}
       <img
+        id='search-image'
         src='./search.jpeg'
         className={gameRunning ? undefined : 'blur-sm -z-10'}
         onClick={gameRunning ? handleMenu : undefined}
-        onMouseMove={findCoords}
+        onMouseMove={findAbsoluteCoords}
       />
       {gameRunning && (
         <div className='fixed flex flex-row text-center text-sky-400 gap-2 px-3 py-3 bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3 bg-slate-800 border border-slate-50/5 bg-opacity-80 backdrop-blur-2xl rounded-2xl'>
@@ -122,6 +107,7 @@ function App() {
       )}
       {menuVisible && (
         <ContextMenu
+          guessCoords={guessCoords}
           clickPosition={clickPosition}
           handleCloseMenu={handleCloseMenu}
           characters={characters}

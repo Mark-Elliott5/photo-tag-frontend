@@ -1,22 +1,54 @@
 import { useEffect, useState } from 'react';
 import { Flipped, Flipper } from 'react-flip-toolkit';
+import { submitWaldo } from '../fetch/fetchFunctions';
+import { AxiosResponse } from 'axios';
 
 function ContextMenu({
+  guessCoords,
   clickPosition,
   handleCloseMenu,
   characters,
 }: {
+  guessCoords: { x: number; y: number };
   clickPosition: { x: number; y: number };
-  handleCloseMenu: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleCloseMenu: (data: {
+    correct: boolean;
+    win: boolean;
+    value: string;
+    error?: string;
+  }) => void;
   characters: {
     [k: string]: boolean;
   };
 }) {
   const [menuPosition, setMenuPosition] = useState({
     x: clickPosition.x + scrollX,
-    y: clickPosition.y + scrollY,
+    y: clickPosition.y + scrollY + 20, // + 20 animates menu upward on click
     hidden: true,
   });
+
+  const checkCoords = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const response:
+      | AxiosResponse<{ correct: boolean; win: boolean }>
+      | undefined = await submitWaldo(
+      guessCoords,
+      (e.target as HTMLButtonElement).value
+    );
+    console.log(response);
+    if (!response) {
+      return handleCloseMenu({
+        correct: false,
+        win: false,
+        value: (e.target as HTMLButtonElement).value,
+        error: 'Server error!',
+      });
+    }
+    handleCloseMenu({
+      correct: response.data.correct,
+      win: response.data.win,
+      value: (e.target as HTMLButtonElement).value,
+    });
+  };
 
   useEffect(() => {
     const { x, y } = clickPosition;
@@ -33,6 +65,10 @@ function ContextMenu({
       const innerWidth = window.innerWidth;
       const innerHeight = window.innerHeight;
 
+      // if context menu will be offscreen, reset position.value to nearest
+      // value that will contain the full width/height of the context menu,
+      // then add scrollValue. Else, just add scrollValue to initial click
+      // position.
       if (rect.width + x > innerWidth) {
         position.x = innerWidth - rect.width * 1.25;
       }
@@ -47,8 +83,6 @@ function ContextMenu({
       setMenuPosition(position);
     }
   }, [clickPosition]);
-
-  // implement changing characters to find per pageload in future
 
   return (
     <Flipper flipKey={menuPosition} spring={{ stiffness: 600, damping: 50 }}>
@@ -70,7 +104,7 @@ function ContextMenu({
                 src={`${key.toLowerCase()}.jpg`}
               />
               <button
-                onClick={handleCloseMenu}
+                onClick={checkCoords}
                 value={key}
                 className='min-w-32 sm:text-base text-sm bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
               >

@@ -5,15 +5,11 @@ import { AxiosResponse } from 'axios';
 function Leaderboard({
   setLeaderboardVisible,
 }: {
-  setLeaderboardVisible: (bool: boolean) => void;
+  setLeaderboardVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [leaderboard, setLeaderboard] = useState<
     undefined | { name: string; time: string }[]
   >(undefined);
-
-  const handleCloseLeaderboard = () => {
-    setLeaderboardVisible(false);
-  };
 
   useEffect(() => {
     async function fetchLeaderboard() {
@@ -35,7 +31,7 @@ function Leaderboard({
             </p>
           ))
         : 'loading spinner here'}
-      <button onClick={handleCloseLeaderboard}>Close</button>
+      <button onClick={() => setLeaderboardVisible(false)}>Close</button>
     </div>
   );
 }
