@@ -6,6 +6,7 @@ import ContextMenu from './components/ContextMenu';
 import Leaderboard from './components/Leaderboard';
 import SubmitName from './components/SubmitName';
 import WelcomeMessage from './components/WelcomeMessage';
+import CharacterPortraits from './components/CharacterPortraits';
 
 function App() {
   const [gameRunning, setGameRunning] = useState(false);
@@ -94,17 +95,7 @@ function App() {
         onClick={gameRunning ? handleMenu : undefined}
         onMouseMove={findAbsoluteCoords}
       />
-      {gameRunning && (
-        <div className='fixed flex flex-row text-center text-sky-400 gap-2 px-3 py-3 bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/3 bg-slate-800 border border-slate-50/5 bg-opacity-80 backdrop-blur-2xl rounded-2xl'>
-          {Object.keys(characters).map((key) => (
-            <img
-              key={key}
-              className='sm:w-8 sm:h-8 w-6 h-6 aspect-square'
-              src={`${key.toLowerCase()}.jpg`}
-            />
-          ))}
-        </div>
-      )}
+      {gameRunning && <CharacterPortraits characters={characters} />}
       {menuVisible && (
         <ContextMenu
           guessCoords={guessCoords}

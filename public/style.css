@@ -628,6 +628,11 @@ video {
   width: 100%;
 }
 
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
+}
+
 .min-w-32 {
   min-width: 8rem;
 }
@@ -705,6 +710,11 @@ video {
 
 .border-slate-50\/5 {
   border-color: rgb(248 250 252 / 0.05);
+}
+
+.border-slate-800 {
+  --tw-border-opacity: 1;
+  border-color: rgb(30 41 59 / var(--tw-border-opacity));
 }
 
 .bg-sky-400\/10 {
@@ -959,8 +969,26 @@ button:focus-visible {
 }
 
 @media (min-width: 768px) {
+  .md\:h-10 {
+    height: 2.5rem;
+  }
+
+  .md\:w-10 {
+    width: 2.5rem;
+  }
+
   .md\:text-base {
     font-size: 1rem;
     line-height: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:h-12 {
+    height: 3rem;
+  }
+
+  .lg\:w-12 {
+    width: 3rem;
   }
 }
