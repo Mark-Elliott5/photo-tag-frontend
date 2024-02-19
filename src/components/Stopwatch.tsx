@@ -29,15 +29,23 @@ function Stopwatch({
     try {
       const response: AxiosResponse<{ characters: string[] }> | undefined =
         await startGame();
-      if (response && response.status === 200 && response.data.characters) {
-        console.log('Game started');
-        handleStartGame(response.data.characters);
-        start();
-      } else {
-        throw new Error('startGame() failed');
+
+      if (!response) {
+        throw new Error('No server response.');
       }
+      if (response.status !== 200) {
+        throw new Error('Server failure.');
+      }
+      if (response.data.characters.length !== 5) {
+        throw new Error(
+          `Expected 5 characters - received ${response.data.characters.length}`
+        );
+      }
+      console.log('Game started');
+      handleStartGame(response.data.characters);
+      start();
     } catch (err) {
-      console.log(err);
+      console.log('startGame() error: ' + err);
     }
     // uncomment to debug
     handleStartGame(['Aang', 'Ghostface', 'G-Man', 'Ice King', 'Mikasa']);
