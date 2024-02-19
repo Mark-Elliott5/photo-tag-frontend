@@ -29,18 +29,20 @@ function Stopwatch({
     try {
       const response: AxiosResponse<{ characters: string[] }> | undefined =
         await startGame();
-
       if (!response) {
         throw new Error('No server response.');
       }
-      if (response.status !== 200) {
-        throw new Error('Server failure.');
+
+      const characters = response.data.characters;
+      if (!characters) {
+        throw new Error('No characters received.');
+        // flash server error
       }
-      if (response.data.characters.length !== 5) {
-        throw new Error(
-          `Expected 5 characters - received ${response.data.characters.length}`
-        );
+      if (characters.length !== 5) {
+        throw new Error('Did not receive 5 characters.');
+        // flash server error
       }
+
       console.log('Game started');
       handleStartGame(response.data.characters);
       start();

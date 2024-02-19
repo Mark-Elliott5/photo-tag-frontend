@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Flipped, Flipper } from 'react-flip-toolkit';
-import { submitWaldo } from '../fetch/fetchFunctions';
+import { guessWaldo } from '../fetch/fetchFunctions';
 import { AxiosResponse } from 'axios';
 
 function ContextMenu({
@@ -11,12 +11,12 @@ function ContextMenu({
 }: {
   guessCoords: { x: number; y: number };
   clickPosition: { x: number; y: number };
-  handleCloseMenu: (data: {
-    correct: boolean;
-    win: boolean;
-    value: string;
-    error?: string;
-  }) => void;
+  handleCloseMenu: (
+    correct: boolean,
+    win: boolean,
+    value: string,
+    error?: string
+  ) => void;
   characters: {
     [k: string]: boolean;
   };
@@ -30,24 +30,24 @@ function ContextMenu({
   const checkCoords = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const response:
       | AxiosResponse<{ correct: boolean; win: boolean }>
-      | undefined = await submitWaldo(
+      | undefined = await guessWaldo(
       guessCoords,
       (e.target as HTMLButtonElement).value
     );
     console.log(response);
     if (!response) {
-      return handleCloseMenu({
-        correct: false,
-        win: false,
-        value: (e.target as HTMLButtonElement).value,
-        error: 'Server error!',
-      });
+      return handleCloseMenu(
+        false,
+        false,
+        (e.target as HTMLButtonElement).value,
+        'Server error!'
+      );
     }
-    handleCloseMenu({
-      correct: response.data.correct,
-      win: response.data.win,
-      value: (e.target as HTMLButtonElement).value,
-    });
+    handleCloseMenu(
+      response.data.correct,
+      response.data.win,
+      (e.target as HTMLButtonElement).value
+    );
   };
 
   useEffect(() => {

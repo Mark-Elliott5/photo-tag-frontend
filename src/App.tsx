@@ -39,23 +39,26 @@ function App() {
     setGameRunning(true);
   };
 
-  const handleCloseMenu = (data: {
-    correct: boolean;
-    win: boolean;
-    value: string;
-    error?: string;
-  }) => {
-    if (data.correct) {
+  const handleCloseMenu = (
+    correct: boolean,
+    win: boolean,
+    value: string,
+    err?: string
+  ) => {
+    if (err) {
+      // flash error message
+    }
+    if (correct) {
       setCharacters({
         ...characters,
-        [data.value]: false,
+        [value]: false,
       });
       // flash correct message
       // useEffect(() => setTimeout then clearTimeout)
     } else {
       // flash incorrect message
     }
-    if (data.win) {
+    if (win) {
       setSubmitNameVisible(true);
     }
     setMenuVisible(false);
