@@ -75,7 +75,7 @@ function App() {
     const x = Math.round((offsetX / rect.width) * 100);
     const y = Math.round((offsetY / rect.height) * 100);
 
-    console.log(`Offset Coords: [${x}, ${y}]`);
+    // console.log(`Offset Coords: [${x}, ${y}]`);
     return { x, y };
   };
 
