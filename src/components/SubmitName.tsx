@@ -31,7 +31,7 @@ function SubmitName({
   };
 
   return (
-    <div className='fixed w-full h-full'>
+    <div className='animate-fade fixed w-full h-full'>
       <div
         className='text-center text-sky-400 px-3 py-3 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-slate-800 border border-slate-50/5 bg-opacity-80 backdrop-blur-2xl rounded-2xl'
         id='submit-name-wrapper'

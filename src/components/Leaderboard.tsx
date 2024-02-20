@@ -27,7 +27,10 @@ function Leaderboard({
   }, []);
 
   return (
-    <div id='leaderboard'>
+    <div
+      id='leaderboard'
+      className='animate-fade fixed text-center text-sky-400 sm:px-5 sm:py-7 px-4 py-6 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-slate-800 border border-slate-50/5 bg-opacity-80 backdrop-blur-2xl rounded-2xl'
+    >
       <p>Leaderboard</p>
       {leaderboard ? (
         leaderboard.map(({ name, time }) => (

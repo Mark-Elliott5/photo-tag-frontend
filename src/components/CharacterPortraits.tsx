@@ -4,7 +4,7 @@ function CharacterPortraits({
   characters: { [k: string]: boolean };
 }) {
   return (
-    <div className='sticky bottom-0 flex flex-row py-1 justify-center text-center gap-2 bg-slate-800 border border-slate-50/5 bg-opacity-80 backdrop-blur-2xl'>
+    <div className='animate-fade sticky bottom-0 flex flex-row py-1 justify-center text-center gap-2 bg-slate-800 border border-slate-50/5 bg-opacity-80 backdrop-blur-2xl'>
       {Object.keys(characters).map((key) => (
         <img
           key={key}
