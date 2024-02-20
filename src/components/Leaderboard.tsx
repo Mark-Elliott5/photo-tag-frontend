@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { getLeaderboard } from '../fetch/fetchFunctions';
-import { AxiosResponse } from 'axios';
 
 function Leaderboard({
   setLeaderboardVisible,
@@ -10,27 +9,40 @@ function Leaderboard({
   const [leaderboard, setLeaderboard] = useState<
     undefined | { name: string; time: string }[]
   >(undefined);
+  const [fetchError, setFetchError] = useState(false);
+
+  const fetchLeaderboard = async () => {
+    setFetchError(false);
+    try {
+      const response = await getLeaderboard();
+      setLeaderboard(response.data);
+    } catch (err) {
+      console.error('getLeaderboard error: ' + err);
+      setFetchError(true);
+    }
+  };
 
   useEffect(() => {
-    async function fetchLeaderboard() {
-      const response:
-        | AxiosResponse<{ name: string; time: string }[]>
-        | undefined = await getLeaderboard();
-      setLeaderboard(response?.data);
-    }
     fetchLeaderboard();
   }, []);
 
   return (
-    <div id='win-container'>
-      <p>You Won!</p>
-      {leaderboard
-        ? leaderboard.map(({ name, time }) => (
-            <p>
-              {name}: {time}
-            </p>
-          ))
-        : 'loading spinner here'}
+    <div id='leaderboard'>
+      <p>Leaderboard</p>
+      {leaderboard ? (
+        leaderboard.map(({ name, time }) => (
+          <p>
+            {name}: {time}
+          </p>
+        ))
+      ) : fetchError ? (
+        <>
+          <p>Server Error! Leaderboard data not downloaded.</p>
+          <button onClick={fetchLeaderboard}>Retry</button>
+        </>
+      ) : (
+        'loading spinner here'
+      )}
       <button onClick={() => setLeaderboardVisible(false)}>Close</button>
     </div>
   );

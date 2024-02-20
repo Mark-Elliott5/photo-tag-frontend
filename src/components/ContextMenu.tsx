@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Flipped, Flipper } from 'react-flip-toolkit';
 import { guessWaldo } from '../fetch/fetchFunctions';
-import { AxiosResponse } from 'axios';
 
 function ContextMenu({
   guessCoords,
@@ -28,26 +27,26 @@ function ContextMenu({
   });
 
   const checkCoords = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const response:
-      | AxiosResponse<{ correct: boolean; win: boolean }>
-      | undefined = await guessWaldo(
-      guessCoords,
-      (e.target as HTMLButtonElement).value
-    );
-    console.log(response);
-    if (!response) {
-      return handleCloseMenu(
+    try {
+      const response = await guessWaldo(
+        guessCoords,
+        (e.target as HTMLButtonElement).value
+      );
+      console.log(response);
+      handleCloseMenu(
+        response.data.correct,
+        response.data.win,
+        (e.target as HTMLButtonElement).value
+      );
+    } catch (err) {
+      console.error('checkCoords error: ' + err);
+      handleCloseMenu(
         false,
         false,
         (e.target as HTMLButtonElement).value,
         'Server error!'
       );
     }
-    handleCloseMenu(
-      response.data.correct,
-      response.data.win,
-      (e.target as HTMLButtonElement).value
-    );
   };
 
   useEffect(() => {
@@ -65,7 +64,7 @@ function ContextMenu({
       const innerWidth = window.innerWidth;
       const innerHeight = window.innerHeight;
 
-      // if context menu will be offscreen, reset position.value to nearest
+      // if context menu will be offscreen, reset position.axis to nearest
       // value that will contain the full width/height of the context menu,
       // then add scrollValue. Else, just add scrollValue to initial click
       // position.

@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios';
 import { useEffect } from 'react';
 import { useStopwatch } from 'react-timer-hook';
 import { startGame } from '../fetch/fetchFunctions';
@@ -27,27 +26,20 @@ function Stopwatch({
 
   const startGameHandler = async () => {
     try {
-      const response: AxiosResponse<{ characters: string[] }> | undefined =
-        await startGame();
-      if (!response) {
-        throw new Error('No server response.');
-      }
-
+      const response = await startGame();
       const characters = response.data.characters;
       if (!characters) {
         throw new Error('No characters received.');
-        // flash server error
       }
       if (characters.length !== 5) {
         throw new Error('Did not receive 5 characters.');
-        // flash server error
       }
-
       console.log('Game started');
       handleStartGame(response.data.characters);
       start();
     } catch (err) {
-      console.log('startGame() error: ' + err);
+      console.error('startGame error: ' + err);
+      // flash error message
     }
     // uncomment to debug
     handleStartGame(['Aang', 'Ghostface', 'G-Man', 'Ice King', 'Mikasa']);

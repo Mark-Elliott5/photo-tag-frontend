@@ -7,9 +7,11 @@ function SubmitName({
   setSubmitNameVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [loadingSpinner, setLoadingSpinner] = useState(false);
+  const [nameError, setNameError] = useState(false);
 
   const sendName = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setNameError(false);
     setLoadingSpinner(true);
     const name = new FormData(e.currentTarget).get('name');
     try {
@@ -17,14 +19,15 @@ function SubmitName({
         throw new Error('No name supplied to submitName');
       }
       const response = await submitName(name as string);
-      if (!response || response.status !== 200) {
-        throw new Error(`submitName failed`);
+      if (!response.data.accepted) {
+        throw new Error(`Name rejected`);
       }
       setSubmitNameVisible(false);
     } catch (err) {
-      setLoadingSpinner(false);
-      console.log(err);
+      console.error('submitName error: ' + err);
+      setNameError(true);
     }
+    setLoadingSpinner(false);
   };
 
   return (
@@ -37,7 +40,14 @@ function SubmitName({
           <div>Loading Spinner here</div>
         ) : (
           <>
-            <p className='mb-2 font-bold'>Submit your name!</p>
+            {nameError ? (
+              <p className='mb-2 font-bold'>
+                There was an error accepting your name. Please try again.
+              </p>
+            ) : (
+              <p className='mb-2 font-bold'>Submit your name!</p>
+            )}
+
             <form
               className='flex flex-col items-center justify-center gap-2'
               onSubmit={sendName}
