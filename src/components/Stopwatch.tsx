@@ -42,8 +42,8 @@ function Stopwatch({
       // flash error message
     }
     // uncomment to debug
-    handleStartGame(['Aang', 'Ghostface', 'G-Man', 'Ice King', 'Mikasa']);
-    start();
+    // handleStartGame(['Aang', 'Ghostface', 'G-Man', 'Ice King', 'Mikasa']);
+    // start();
   };
 
   useEffect(() => {

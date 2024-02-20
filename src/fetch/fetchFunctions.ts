@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 async function getLeaderboard() {
   try {
     const response: AxiosResponse<{ name: string; time: string }[]> =
-      await axios.get(window.location.hostname + '/api/leaderboard');
+      await axios.get('/api/leaderboard');
     // return a leaderboard json
     return response;
   } catch (error) {
@@ -15,9 +15,8 @@ async function getLeaderboard() {
 async function startGame() {
   try {
     // { withCredentials: true } needed only if not accessing the same domain
-    const response: AxiosResponse<{ characters: string[] }> = await axios.get(
-      window.location.hostname + '/api/start'
-    );
+    const response: AxiosResponse<{ characters: string[] }> =
+      await axios.get('/api/start');
     return response;
   } catch (error) {
     console.error(`Axios GET startGame() failure: ${error}`);
@@ -28,8 +27,8 @@ async function startGame() {
 async function submitName(name: string) {
   try {
     const response: AxiosResponse<{ accepted: boolean }> = await axios.post(
-      window.location.hostname + '/api/name',
-      name
+      '/api/name',
+      { name }
     );
     // return a leaderboard json
     return response;
@@ -42,7 +41,7 @@ async function submitName(name: string) {
 async function guessWaldo(coords: { x: number; y: number }, waldo: string) {
   try {
     const response: AxiosResponse<{ correct: boolean; win: boolean }> =
-      await axios.post(window.location.hostname + '/api/waldo', {
+      await axios.post('/api/guess', {
         coords,
         waldo,
       });
