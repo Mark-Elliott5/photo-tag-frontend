@@ -19,7 +19,7 @@ function SubmitName({
         throw new Error('No name supplied to submitName');
       }
       const response = await submitName(name as string);
-      if (!response.data.accepted) {
+      if (!response.data || !response.data.accepted) {
         throw new Error(`Name rejected`);
       }
       setSubmitNameVisible(false);
