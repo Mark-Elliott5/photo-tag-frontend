@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useStopwatch } from 'react-timer-hook';
 import { startGame } from '../fetch/fetchFunctions';
 
@@ -14,6 +14,9 @@ function Stopwatch({
   const { seconds, minutes, hours, start, pause, reset } = useStopwatch({
     autoStart: false,
   });
+
+  const [fetching, setFetching] = useState(false);
+
   const formatUnitOfTime = (unit: number) => {
     return `${unit < 10 ? `0${unit}` : unit}`;
   };
@@ -21,6 +24,7 @@ function Stopwatch({
   const timeElapsed = `${formatUnitOfTime(hours)} : ${formatUnitOfTime(minutes)} : ${formatUnitOfTime(seconds)}`;
 
   const startGameHandler = async () => {
+    setFetching(true);
     try {
       const response = await startGame();
       const characters = response.data.characters;
@@ -37,6 +41,7 @@ function Stopwatch({
     } catch (err) {
       console.error('startGame error: ' + err);
     }
+    setFetching(false);
     // uncomment to debug
     // handleStartGame(['Aang', 'Ghostface', 'G-Man', 'Ice King', 'Mikasa']);
     // start();
@@ -60,11 +65,13 @@ function Stopwatch({
         className={`py-1 px-4 whitespace-nowrap md:text-base sm:text-sm text-xs rounded-full ${gameRunning ? 'bg-slate-900/60 text-gray-500 ' : 'bg-sky-400/10 text-sky-400'} hover:border-sky-400 focus:outline-4 focus:outline-sky-400`}
         id='start-game'
         onClick={
-          gameRunning
+          fetching
             ? undefined
-            : submitNameVisible
+            : gameRunning
               ? undefined
-              : startGameHandler
+              : submitNameVisible
+                ? undefined
+                : startGameHandler
         }
       >
         {gameRunning

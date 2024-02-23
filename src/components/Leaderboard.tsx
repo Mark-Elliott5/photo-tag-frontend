@@ -34,7 +34,7 @@ function Leaderboard() {
       <div className='overflow-scroll'>
         {leaderboard ? (
           leaderboard.map(({ name, time }, i) => (
-            <div className='grid grid-cols-leaderboard mx-30%'>
+            <div className='grid grid-cols-leaderboard md:mx30% sm:mx-20% mx-10%'>
               <p>{i + 1}.</p>
               <p>{name}</p>
               <p>{prettyMilliseconds(time, { colonNotation: true })}</p>

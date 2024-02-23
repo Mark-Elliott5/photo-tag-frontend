@@ -7,6 +7,8 @@ export default {
         leaderboard: '1fr 3fr 1fr',
       },
       margin: {
+        '10%': '10%',
+        '20%': '20%',
         '30%': '30%',
       },
       scale: {
