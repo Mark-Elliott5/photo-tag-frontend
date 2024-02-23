@@ -1,10 +1,14 @@
 function CharacterPortraits({
   characters,
+  guessColor,
 }: {
   characters: { [k: string]: boolean };
+  guessColor: 'red' | 'green' | undefined;
 }) {
   return (
-    <div className='animate-fade sticky bottom-0 flex flex-row py-1 justify-evenly text-center gap-2 bg-slate-800 border border-slate-50/5 bg-opacity-80 backdrop-blur-2xl'>
+    <div
+      className={`animate-fade sticky bottom-0 flex flex-row py-1 justify-evenly text-center gap-2 ${guessColor === 'red' ? 'bg-red-800' : guessColor === 'green' ? 'bg-green-800' : 'bg-slate-800'} ${guessColor ? 'bg-opacity-95' : 'bg-opacity-90'} border border-slate-50/5 backdrop-blur-2xl transition-colors`}
+    >
       {Object.keys(characters).map(
         (key) =>
           characters[key] && (

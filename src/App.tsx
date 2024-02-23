@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NavBar from './components/NavBar';
 import Stopwatch from './components/Stopwatch';
 import './index.css';
@@ -14,6 +14,9 @@ function App() {
   const [menuVisible, setMenuVisible] = useState(false);
   const [leaderboardVisible, setLeaderboardVisible] = useState(false);
   const [welcomeVisible, setWelcomeVisible] = useState(true);
+  const [guessColor, setGuessColor] = useState<'red' | 'green' | undefined>(
+    undefined
+  );
 
   const [clickPosition, setClickPosition] = useState({
     x: 0,
@@ -54,10 +57,11 @@ function App() {
         ...characters,
         [value]: false,
       });
+      setGuessColor('green');
       // flash correct message
       // useEffect(() => setTimeout then clearTimeout)
     } else {
-      // flash incorrect message
+      setGuessColor('red');
     }
     if (win) {
       setSubmitNameVisible(true);
@@ -78,6 +82,16 @@ function App() {
     setMenuVisible(true);
   };
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setGuessColor(undefined);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeout); // Clear the timeout when the component unmounts or dependencies change
+    };
+  }, [guessColor]);
+
   const findAbsoluteCoords = (e: React.MouseEvent<HTMLImageElement>) => {
     const rect = (e.target as HTMLImageElement).getBoundingClientRect();
     const { offsetX, offsetY } = e.nativeEvent;
@@ -91,7 +105,7 @@ function App() {
 
   return (
     <>
-      <NavBar>
+      <NavBar guessColor={guessColor}>
         <Stopwatch
           handleStartGame={handleStartGame}
           gameRunning={gameRunning}
@@ -105,7 +119,9 @@ function App() {
         onClick={gameRunning ? handleMenu : undefined}
         // onMouseMove={findAbsoluteCoords}
       />
-      {gameRunning && <CharacterPortraits characters={characters} />}
+      {gameRunning && (
+        <CharacterPortraits guessColor={guessColor} characters={characters} />
+      )}
       {menuVisible && (
         <ContextMenu
           guessCoords={guessCoords}

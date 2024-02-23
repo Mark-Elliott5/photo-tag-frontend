@@ -1,11 +1,17 @@
-function NavBar({ children }: { children: React.ReactNode }) {
+function NavBar({
+  children,
+  guessColor,
+}: {
+  children: React.ReactNode;
+  guessColor: 'red' | 'green' | undefined;
+}) {
   return (
     <>
       <nav
         id='nav'
-        className='animate-fade flex z-10 items-center sm:px-4 sm:py-3 px-3 py-2 justify-between sticky top-0 bg-slate-800 bg-opacity-90 backdrop-blur-2xl border-b border-slate-50/5'
+        className={`animate-fade flex z-10 items-center sm:px-4 sm:py-3 px-3 py-2 justify-between sticky top-0 ${guessColor === 'red' ? 'bg-red-800' : guessColor === 'green' ? 'bg-green-800' : 'bg-slate-800'} ${guessColor ? 'bg-opacity-95' : 'bg-opacity-90'} backdrop-blur-2xl border-b border-slate-50/5 transition-colors`}
       >
-        <div className='flex sm:gap-7 gap-3 items-center'>
+        <div className='flex sm:gap-7 bg-re  gap-3 items-center'>
           <span className='sm:text-2xl cursor-pointer search-party'>
             Search Party!
           </span>

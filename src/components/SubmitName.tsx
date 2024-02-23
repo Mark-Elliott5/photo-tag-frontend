@@ -58,16 +58,21 @@ function SubmitName({
                 required
                 name='name'
                 type='text'
+                className='w-full'
               ></input>
-              <div>
+              <div className='flex w-full justify-between'>
+                <button
+                  className='bg-red-500/10 text-red-500 py-1 px-4 rounded-full'
+                  type='button'
+                  onClick={handleCloseSubmitName}
+                >
+                  Skip
+                </button>
                 <button
                   className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
                   type='submit'
                 >
                   Submit
-                </button>
-                <button type='button' onClick={handleCloseSubmitName}>
-                  Skip
                 </button>
               </div>
             </form>

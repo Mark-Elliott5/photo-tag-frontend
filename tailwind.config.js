@@ -3,6 +3,9 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        leaderboard: '1fr 3fr 1fr',
+      },
       margin: {
         '30%': '30%',
       },
