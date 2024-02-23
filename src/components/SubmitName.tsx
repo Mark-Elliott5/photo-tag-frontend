@@ -41,11 +41,19 @@ function SubmitName({
         ) : (
           <>
             {nameError ? (
-              <p className='mb-2 font-bold'>
-                There was an error accepting your name. Please try again.
-              </p>
+              <>
+                <p className='mb-2 font-bold'>
+                  There was an error accepting your name. Please try again.
+                </p>
+                <p className='mb-2 text-sm'>
+                  Name must only contain alphanumeric characters, periods,
+                  underscores, and/or hyphens.
+                </p>
+              </>
             ) : (
-              <p className='mb-2 font-bold'>Submit your name!</p>
+              <p className='mb-2 font-bold'>
+                Submit your name! Only your highest is saved.
+              </p>
             )}
 
             <form

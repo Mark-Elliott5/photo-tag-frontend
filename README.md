@@ -1,5 +1,6 @@
 This photo-tag-frontend project features:
 
+- Typescript
 - A frontend for an online Where's Waldo game called "Search Party!"
 - React
 - RESTful API consumption via Axios
@@ -11,4 +12,4 @@ logic is held on the backend to prevent cheating. Users are randomly served 5
 various "Waldos" from many different franchises to find for a chance to put
 their name on the leaderboard.
 
-![Search Party](images/searchparty.png)
+![Search Party](images/searchparty.jpg)
