@@ -43,7 +43,12 @@ function Leaderboard() {
         ) : fetchError ? (
           <>
             <p>Server Error! Leaderboard data not downloaded.</p>
-            <button onClick={fetchLeaderboard}>Retry</button>
+            <button
+              className='focus:outline-4 focus:outline-sky-400 hover:border-sky-400 bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full '
+              onClick={fetchLeaderboard}
+            >
+              Retry
+            </button>
           </>
         ) : (
           'Loading...'

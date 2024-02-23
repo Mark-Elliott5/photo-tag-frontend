@@ -106,7 +106,7 @@ function ContextMenu({
                 <button
                   onClick={checkCoords}
                   value={key}
-                  className='w-full sm:text-base text-sm bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
+                  className='focus:outline-4 focus:outline-sky-400 w-full sm:text-base text-sm bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full hover:border-sky-400'
                 >
                   {key}
                 </button>

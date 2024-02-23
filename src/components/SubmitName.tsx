@@ -62,14 +62,14 @@ function SubmitName({
               ></input>
               <div className='flex w-full justify-between'>
                 <button
-                  className='bg-red-500/10 text-red-500 py-1 px-4 rounded-full'
+                  className='bg-red-500/10 text-red-500 py-1 hover:border-red-500 focus:outline-4 focus:outline-red-500 px-4 rounded-full'
                   type='button'
                   onClick={handleCloseSubmitName}
                 >
                   Skip
                 </button>
                 <button
-                  className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
+                  className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full hover:border-sky-400 focus:outline-4 focus:outline-sky-400'
                   type='submit'
                 >
                   Submit

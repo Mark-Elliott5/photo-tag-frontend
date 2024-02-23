@@ -109,6 +109,7 @@ function App() {
         <Stopwatch
           handleStartGame={handleStartGame}
           gameRunning={gameRunning}
+          submitNameVisible={submitNameVisible}
         />
       </NavBar>
       {welcomeVisible && <WelcomeMessage />}
