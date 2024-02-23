@@ -13,7 +13,7 @@ function App() {
   const [submitNameVisible, setSubmitNameVisible] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const [leaderboardVisible, setLeaderboardVisible] = useState(false);
-  const [displayWelcome, setDisplayWelcome] = useState(true);
+  const [welcomeVisible, setWelcomeVisible] = useState(true);
 
   const [clickPosition, setClickPosition] = useState({
     x: 0,
@@ -35,7 +35,8 @@ function App() {
       characters.map((character) => [character, true])
     );
     setCharacters(newCharacters);
-    setDisplayWelcome(false);
+    setWelcomeVisible(false);
+    setLeaderboardVisible(false);
     setGameRunning(true);
   };
 
@@ -60,8 +61,14 @@ function App() {
     }
     if (win) {
       setSubmitNameVisible(true);
+      setGameRunning(false);
     }
     setMenuVisible(false);
+  };
+
+  const handleCloseSubmitName = () => {
+    setSubmitNameVisible(false);
+    setLeaderboardVisible(true);
   };
 
   const handleMenu = (e: React.MouseEvent<HTMLImageElement>) => {
@@ -90,13 +97,13 @@ function App() {
           gameRunning={gameRunning}
         />
       </NavBar>
-      {displayWelcome ? <WelcomeMessage /> : undefined}
+      {welcomeVisible && <WelcomeMessage />}
       <img
         id='search-image'
         src='./search.jpeg'
         className={gameRunning ? undefined : 'blur-sm -z-10'}
         onClick={gameRunning ? handleMenu : undefined}
-        onMouseMove={findAbsoluteCoords}
+        // onMouseMove={findAbsoluteCoords}
       />
       {gameRunning && <CharacterPortraits characters={characters} />}
       {menuVisible && (
@@ -108,11 +115,9 @@ function App() {
         />
       )}
       {submitNameVisible && (
-        <SubmitName setSubmitNameVisible={setSubmitNameVisible} />
+        <SubmitName handleCloseSubmitName={handleCloseSubmitName} />
       )}
-      {leaderboardVisible && (
-        <Leaderboard setLeaderboardVisible={setLeaderboardVisible} />
-      )}
+      {leaderboardVisible && <Leaderboard />}
     </>
   );
 }

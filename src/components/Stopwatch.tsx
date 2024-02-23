@@ -9,19 +9,13 @@ function Stopwatch({
   handleStartGame: (characters: string[]) => void;
   gameRunning: boolean;
 }) {
-  const {
-    // totalSeconds,
-    seconds,
-    minutes,
-    hours,
-    // days,
-    start,
-    pause,
-    // reset,
-  } = useStopwatch({ autoStart: false });
+  const { seconds, minutes, hours, start, pause, reset } = useStopwatch({
+    autoStart: false,
+  });
   const formatUnitOfTime = (unit: number) => {
     return `${unit < 10 ? `0${unit}` : unit}`;
   };
+
   const timeElapsed = `${formatUnitOfTime(hours)} : ${formatUnitOfTime(minutes)} : ${formatUnitOfTime(seconds)}`;
 
   const startGameHandler = async () => {
@@ -36,6 +30,7 @@ function Stopwatch({
       }
       console.log('Game started');
       handleStartGame(response.data.characters);
+      reset();
       start();
     } catch (err) {
       console.error('startGame error: ' + err);

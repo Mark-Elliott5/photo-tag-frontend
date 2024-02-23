@@ -3,8 +3,11 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      margin: {
+        '30%': '30%',
+      },
       scale: {
-        200: '2',
+        300: '3',
       },
       animation: {
         fade: 'fadeIn 0.25s ease-in-out',

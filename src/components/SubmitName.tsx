@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { submitName } from '../fetch/fetchFunctions';
 
 function SubmitName({
-  setSubmitNameVisible,
+  handleCloseSubmitName,
 }: {
-  setSubmitNameVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  handleCloseSubmitName: () => void;
 }) {
   const [loadingSpinner, setLoadingSpinner] = useState(false);
   const [nameError, setNameError] = useState(false);
@@ -22,7 +22,7 @@ function SubmitName({
       if (!response.data || !response.data.accepted) {
         throw new Error(`Name rejected`);
       }
-      setSubmitNameVisible(false);
+      handleCloseSubmitName();
     } catch (err) {
       console.error('submitName error: ' + err);
       setNameError(true);
@@ -33,11 +33,11 @@ function SubmitName({
   return (
     <div className='animate-fade fixed w-full h-full'>
       <div
-        className='text-center text-sky-400 px-3 py-3 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-slate-800 border border-slate-50/5 bg-opacity-80 backdrop-blur-2xl rounded-2xl'
+        className='text-center text-white px-3 py-3 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-slate-800 border border-slate-50/5 bg-opacity-80 backdrop-blur-2xl rounded-2xl'
         id='submit-name-wrapper'
       >
         {loadingSpinner ? (
-          <div>Loading Spinner here</div>
+          <p>Loading</p>
         ) : (
           <>
             {nameError ? (
@@ -52,13 +52,24 @@ function SubmitName({
               className='flex flex-col items-center justify-center gap-2'
               onSubmit={sendName}
             >
-              <input minLength={1} required name='name' type='text'></input>
-              <button
-                className='bg-sky-400/10 py-1 px-4 rounded-full'
-                type='submit'
-              >
-                Submit
-              </button>
+              <input
+                minLength={1}
+                maxLength={20}
+                required
+                name='name'
+                type='text'
+              ></input>
+              <div>
+                <button
+                  className='bg-sky-400/10 text-sky-400 py-1 px-4 rounded-full'
+                  type='submit'
+                >
+                  Submit
+                </button>
+                <button type='button' onClick={handleCloseSubmitName}>
+                  Skip
+                </button>
+              </div>
             </form>
           </>
         )}
