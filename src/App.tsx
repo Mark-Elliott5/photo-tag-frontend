@@ -10,20 +10,20 @@ import CharacterPortraits from './components/CharacterPortraits';
 
 function App() {
   const [gameRunning, setGameRunning] = useState(false);
+
   const [submitNameVisible, setSubmitNameVisible] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const [leaderboardVisible, setLeaderboardVisible] = useState(false);
   const [welcomeVisible, setWelcomeVisible] = useState(true);
+
   const [guessColor, setGuessColor] = useState<'red' | 'green' | undefined>(
     undefined
   );
-
+  const [guessCoords, setGuessCoords] = useState({ x: 0, y: 0 });
   const [clickPosition, setClickPosition] = useState({
     x: 0,
     y: 0,
   });
-
-  const [guessCoords, setGuessCoords] = useState({ x: 0, y: 0 });
 
   const [characters, setCharacters] = useState<{ [k: string]: boolean }>({
     Aang: true,
@@ -43,23 +43,13 @@ function App() {
     setGameRunning(true);
   };
 
-  const handleCloseMenu = (
-    correct: boolean,
-    win: boolean,
-    value: string,
-    err?: string
-  ) => {
-    if (err) {
-      // flash error message
-    }
+  const handleCloseMenu = (correct: boolean, win: boolean, value: string) => {
     if (correct) {
       setCharacters({
         ...characters,
         [value]: false,
       });
       setGuessColor('green');
-      // flash correct message
-      // useEffect(() => setTimeout then clearTimeout)
     } else {
       setGuessColor('red');
     }
@@ -88,7 +78,7 @@ function App() {
     }, 1000);
 
     return () => {
-      clearTimeout(timeout); // Clear the timeout when the component unmounts or dependencies change
+      clearTimeout(timeout);
     };
   }, [guessColor]);
 

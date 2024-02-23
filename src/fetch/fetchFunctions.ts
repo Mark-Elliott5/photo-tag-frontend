@@ -4,7 +4,6 @@ async function getLeaderboard() {
   try {
     const response: AxiosResponse<{ name: string; time: number }[]> =
       await axios.get('/api/leaderboard');
-    // return a leaderboard json
     return response;
   } catch (error) {
     console.error(`Axios GET leaderboad error: ${error}`);

@@ -36,7 +36,6 @@ function Stopwatch({
       start();
     } catch (err) {
       console.error('startGame error: ' + err);
-      // flash error message
     }
     // uncomment to debug
     // handleStartGame(['Aang', 'Ghostface', 'G-Man', 'Ice King', 'Mikasa']);
@@ -53,7 +52,7 @@ function Stopwatch({
     <>
       <span
         id='timer'
-        className='text-center whitespace-nowrap md:text-base sm:text-sm text-xs  bg-slate-400/10 px-3 py-1 rounded-full font-medium tabular-nums'
+        className='text-center select-none whitespace-nowrap md:text-base sm:text-sm text-xs  bg-slate-400/10 px-3 py-1 rounded-full font-medium tabular-nums'
       >
         {timeElapsed}
       </span>

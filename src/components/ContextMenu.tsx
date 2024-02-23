@@ -40,12 +40,7 @@ function ContextMenu({
       );
     } catch (err) {
       console.error('checkCoords error: ' + err);
-      handleCloseMenu(
-        false,
-        false,
-        (e.target as HTMLButtonElement).value,
-        'Server error!'
-      );
+      handleCloseMenu(false, false, (e.target as HTMLButtonElement).value);
     }
   };
 

@@ -1,12 +1,9 @@
 import { createContext } from 'react';
 
 interface StopwatchContextType {
-  totalSeconds: number;
   seconds: number;
   minutes: number;
   hours: number;
-  days: number;
-  isRunning: boolean;
   start: () => void;
   pause: () => void;
   reset: (
