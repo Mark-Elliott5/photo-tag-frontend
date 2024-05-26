@@ -89,7 +89,7 @@ function ContextMenu({
             top: menuPosition.y,
             left: menuPosition.x,
           }}
-          className='animate-fade flex flex-col items-center px-4 py-3 bg-slate-800 border border-slate-50/5 bg-opacity-80 backdrop-blur-2xl gap-2 rounded-2xl'
+          className='animate-fade shadow-outline flex flex-col items-center px-4 py-3 bg-slate-800 border border-slate-50/5 bg-opacity-80 backdrop-blur-2xl gap-2 rounded-2xl'
         >
           {Object.keys(characters).map((key) =>
             characters[key] ? (

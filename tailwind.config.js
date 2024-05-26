@@ -17,6 +17,9 @@ export default {
       animation: {
         fade: 'fadeIn 0.25s ease-in-out',
       },
+      boxShadow: {
+        outline: '0 0 8px 0px #0d0d0d',
+      },
       keyframes: () => ({
         fadeIn: {
           '0%': { opacity: 0 },
