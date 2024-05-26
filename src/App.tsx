@@ -106,7 +106,7 @@ function App() {
       <img
         id='search-image'
         src='./search.jpeg'
-        className={gameRunning ? undefined : 'blur-sm -z-10'}
+        className={`object-fill min-w-[100dvw] min-h-[100dvh] ${gameRunning ? undefined : 'blur-sm -z-10'}`}
         onClick={gameRunning ? handleMenu : undefined}
         // onMouseMove={findAbsoluteCoords}
       />
